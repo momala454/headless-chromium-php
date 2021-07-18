@@ -1,5 +1,4 @@
-Chrome PHP
-==========
+# Chrome PHP
 
 [![Latest Stable Version](https://poser.pugx.org/chrome-php/chrome/version)](https://packagist.org/packages/chrome-php/chrome)
 [![License](https://poser.pugx.org/chrome-php/chrome/license)](https://packagist.org/packages/chrome-php/chrome)
@@ -8,15 +7,8 @@ This library lets you start playing with chrome/chromium in headless mode from P
 
 Can be used synchronously and asynchronously!
 
-⚠️Looking for maintainers⚠️
----------------------------
 
-We're looking for some permanent maintainers to help with maintaining this library.
-
-It can be for handling issues, adding documentation, adding new features, fixing bugs, etc...
-
-Features
---------
+## Features
 
 - Open chrome or chromium browser from php
 - Create pages and navigate to pages
@@ -29,27 +21,28 @@ Features
 
 Happy browsing!
 
-Requirements
-------------
 
-Requires PHP 7.1+ and a chrome/chromium executable.
+## Requirements
+
+Requires PHP 7.4 or 8.0 and a chrome/chromium executable.
 
 As of version 65 of chrome/chromium the library proved to work correctly.
 Please try to keep using latest version of chrome.
 
-Note that the library is only tested on linux but is compatible with osX and windows.
+Note that the library is only tested on linux but is compatible with both
+macOS and Windows.
 
-Install
--------
 
-The library can be installed with composer and is available on packagist under [chrome-php/chrome](https://packagist.org/packages/chrome-php/chrome)
+## Installation
+
+The library can be installed with Composer and is available on packagist under
+[chrome-php/chrome](https://packagist.org/packages/chrome-php/chrome):
 
 ```bash
 $ composer require chrome-php/chrome
 ```
 
-Usage
------
+## Usage
 
 It uses a simple and understandable API to start chrome, to open pages, to take screenshots,
 to crawl websites... and almost everything that you can do with chrome as a human.
@@ -122,8 +115,8 @@ About ``debugLogger``: this can be any of a resource string, a resource or an ob
 ``LoggerInterface`` from Psr\Log (such as [monolog](https://github.com/Seldaek/monolog)
 or [apix/log](https://github.com/apix/log)).
 
-API
----
+
+## API
 
 ### Browser Factory
 
@@ -142,7 +135,7 @@ $browser = $browserFactory->createBrowser([
 Here are the options available for the browser factory:
 
 | Option name               | Default | Description                                                                                  |
-|---------------------------|---------|----------------------------------------------------------------------------------------------|
+| ------------------------- | ------- | -------------------------------------------------------------------------------------------- |
 | `connectionDelay`         | `0`     | Delay to apply between each operation for debugging purposes                                 |
 | `customFlags`             | none    | Array of flags to pass to the command line. Eg: `['--option1', '--option2=someValue']`       |
 | `debugLogger`             | `null`  | A string (e.g "php://stdout"), or resource, or PSR-3 logger instance to print debug messages |
@@ -155,7 +148,7 @@ Here are the options available for the browser factory:
 | `startupTimeout`          | `30`    | Maximum time in seconds to wait for chrome to start                                          |
 | `userAgent`               | none    | User agent to use for the whole browser  (see page api for alternative)                      |
 | `userDataDir`             | none    | chrome user data dir (default: a new empty dir is generated temporarily)                     |
-| `windowSize`              | none    | Size of the window. usage: `$width, $height` - see also Page::setViewport                  |
+| `windowSize`              | none    | Size of the window. usage: `$width, $height` - see also Page::setViewport                    |
 
 ### Browser API
 
@@ -483,6 +476,36 @@ To impersonate a real user you may want to add a delay between each keystroke us
 $page->keyboard()->setKeyInterval(10); // sets a delay of 10 miliseconds between keystrokes
 ```
 
+#### Key combinations
+
+The methods `press`, `type` and `release` can be used to send key combinations such as `ctrl + v`.
+
+```php
+// ctrl + a to select all text
+$page->keyboard()
+    ->press(' control ') // key names are case insensitive and trimmed
+        ->type('a') // press and release
+    ->release('Control');
+
+// ctrl + c to copy and ctrl + v to paste it twice
+$page->keyboard()
+    ->press('Ctrl') // alias for Control
+        ->type('c')
+        ->type('V') // upper and lower case should behave the same way
+    ->release(); // release all
+```
+
+You can press the same key several times in sequence, this is equivalent of a user pressing and holding the key. The release event, however, will be sent only once per key.
+
+#### Key aliases
+
+| Key     | Aliases                  |
+| :------ | :----------------------- |
+| Control | `Control`, `Ctrl`, `Ctr` |
+| Alt     | `Alt`, `AltGr`, `Alt Gr` |
+| Meta    | `Meta`, `Command`, `Cmd` |
+| Shift   | `Shift`                  |
+
 ### Cookie API
 
 You can set and get cookies for a page:
@@ -614,21 +637,12 @@ $connection->connect();
 $browser = new Browser($connection);
 ```
 
+
 ## Contributing
 
 See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for contribution details.
 
-## Credits
-
-Thanks to [puppeteer](https://github.com/GoogleChrome/puppeteer) that served as an inspiration.
-
-## Authors
-
-* **Soufiane Ghzal** - *Initial work* - [gsouf](https://github.com/gsouf)
-* **Graham Campbell** - *Current maintainer* - [GrahamCampbell](https://github.com/GrahamCampbell)
-
-See also the list of [contributors](https://github.com/chrome-php/headless-chromium-php/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the [Fair License](./LICENSE).
+This project is licensed under the [The MIT License (MIT)](LICENSE).
